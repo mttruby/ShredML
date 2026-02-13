@@ -119,6 +119,7 @@ Terrible performance atm, didnt get to create some plots yet.
 
 ## Deployment
 
+Note: deployment isn't done yet, however, this is what I planned:
 The project includes a simple deployment pipeline using **FastAPI** and **Streamlit**:  
 
 - **FastAPI endpoint:** Accepts a video upload and returns predicted trick class.  
