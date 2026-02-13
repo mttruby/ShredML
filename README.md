@@ -143,7 +143,7 @@ Note: deployment isn't done yet, however, this is what I planned:
 
 - **FastAPI endpoint:** Accepts a video upload and returns predicted trick class.  
 - **Visualization:** Optionally returns bounding box tracking video to illustrate the detected skateboard motion.  
-- **Frontend:** Streamlit web interface for easy testing.  
+- **Frontend:** Streamlit web interface
 
 ---
 NOTE: Didnt finish creating the API yet due to Bugs in predict.py
