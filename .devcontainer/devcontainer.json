@@ -1,0 +1,20 @@
+{
+    "name": "shredml-container",
+    "dockerFile": "Dockerfile",
+    "context": "..",
+    "runArgs": [
+        "--gpus", "all",
+        "-w", "/workspaces"
+    ],
+    "workspaceFolder": "/workspaces",
+    "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ]
+    }
+  },
+    // "containerUser": "root",
+    "remoteUser": "root"
+}
