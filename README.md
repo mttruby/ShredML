@@ -14,7 +14,7 @@ The key difference in this project is the use of YOLO-based preprocessing to cro
 
 ## Installation
 
-The easiest setup method would be to use the Dockerfile after cloning the repo. To set up the Python environment for ShredML:  
+The easiest setup method would be to use the Dockerfile after cloning the repo:  
 
 ```bash
 cd ShredML
