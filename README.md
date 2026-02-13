@@ -1,8 +1,9 @@
 # ShredML
 
-**Title:** ShredML – Skateboarding Trick Classification  
-**Author:** Matteo Ruby  
-**Date:** Feb 2026  
+**Title:** ShredML \
+**Topic:** Skateboarding Trick Classification \
+**Author:** Matteo Ruby \
+**Date:** Feb 2026
 
 As part of the course Machine Learning at HTW Berlin.
 
@@ -28,8 +29,10 @@ The project makes use of the following python packages:
 - ultralytics
 - scikit-learn
 - tqdm
+
+Planned for deployment:
 - fastapi
--streamlit
+- streamlit
 ---
 
 ## Data
