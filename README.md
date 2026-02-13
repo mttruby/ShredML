@@ -107,8 +107,8 @@ self.classifier = nn.Sequential(
 - **Epochs:** 20  
 - **Batch size:** 8 
 - **Learning rate**: 0.001
-- **Cross validation**: 5-fold
-- **Loss function:** Cross-entropy (for classification)  
+- **Cross validation**: 5-fold; 80% train, 20%  test
+- **Loss function:** Cross-entropy 
 - **Optimizer:** Adam
 - **Device:** GPU: RTX5070 with 12GB GDDR7
 
@@ -130,12 +130,9 @@ Note: deployment isn't done yet, however, this is what I planned:
 - **Frontend:** Streamlit web interface for easy testing.  
 
 ---
-Didnt finish creating the API yet due Bugs in predict.py
-To access the API and upload a video you can use curl:
-curl postxyz video
+NOTE: Didnt finish creating the API yet due to Bugs in predict.py
 
 ## Possible Use Cases
-
 - Automated trick recognition for **S.K.A.T.E.** games (but there is arguably no real demand for it)
 - Automated statistical or competitive analysis for skateboarding competitions (e.g., X-Games)  
 
