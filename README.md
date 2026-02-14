@@ -1,5 +1,5 @@
 # ShredML
-### Live demo available at [shredml.duckdns.org](shredml.duckdns.org)
+### Live demo available at [shredml.duckdns.org](https://shredml.duckdns.org)
 
 **Title:** ShredML \
 **Topic:** Skateboarding Trick Classification \
