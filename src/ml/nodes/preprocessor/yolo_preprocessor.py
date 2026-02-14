@@ -20,8 +20,7 @@ class YOLOPreprocessor:
         confidence_threshold: float = 0.5,
         cropped_images_dir: str = "outputs/cropped_images",
         bbox_dir: str = "outputs/bounding_boxes",
-        use_gpu: bool = True,
-        save_to_disk: bool = True
+        use_gpu: bool = False,
     ):
 
         self.model = YOLO(
@@ -30,7 +29,6 @@ class YOLOPreprocessor:
         self.conf_thresh = confidence_threshold
         self.cropped_dir = cropped_images_dir
         self.bbox_dir = bbox_dir
-        self.save_to_disk = save_to_disk
 
         self._skateboard_class = [k for k, v in self.model.names.items() if v == "skateboard"][0]
         self._person_class = [k for k, v in self.model.names.items() if v == "person"][0]
@@ -46,7 +44,8 @@ class YOLOPreprocessor:
         
 
     def get_bounding_boxes_and_cropped_images(
-        self, cap: cv2.VideoCapture, video_name: str = None, trick_label: str = None, output_dir: str = None
+        self, cap: cv2.VideoCapture, video_name: str = None, trick_label: str = None, output_dir: str = None,
+
     ):
 
         frame_id = 0
@@ -88,25 +87,36 @@ class YOLOPreprocessor:
                         }
                     )
 
-                    if self.save_to_disk:
-                        _cropped_dir = f"{self.cropped_dir}/{trick_label}/{video_name}"
-
-                        os.makedirs(_cropped_dir, exist_ok=True)
-                        os.makedirs(self.bbox_dir, exist_ok=True)
-
                     if x2 > x1 and y2 > y1:
                         crop = frame[y1:y2, x1:x2]
                         cropped_images.append(crop)
-                        if self.save_to_disk:
+                        
+                        if output_dir is None:
+                            
+                            _cropped_dir = f"{self.cropped_dir}/{trick_label}/{video_name}"
+                            
+                            os.makedirs(_cropped_dir, exist_ok=True)
+                            os.makedirs(self.bbox_dir, exist_ok=True)
+
                             cv2.imwrite(
                                 f"{_cropped_dir}/_frame{frame_id}_track{track_id}.jpg", crop
                             )
-
+                        else:
+                            _cropped_dir = f"{output_dir}/frames"
+                            os.makedirs(_cropped_dir, exist_ok=True)
+                            cv2.imwrite(
+                                f"{_cropped_dir}/_frame{frame_id}_track{track_id}.jpg", crop
+                            )
             frame_id += 1
 
         cap.release()
-        if self.save_to_disk:
+
+        if output_dir is None:
             with open(f"{self.bbox_dir}/{video_name}.json", "w") as outf:
+                json.dump(bounding_boxes, outf, indent=2)
+        else:
+            os.makedirs(f"{output_dir}/bounding_boxes", exist_ok=True)
+            with open(f"{output_dir}/bounding_boxes/{video_name}.json", "w") as outf:
                 json.dump(bounding_boxes, outf, indent=2)
 
         return bounding_boxes, cropped_images

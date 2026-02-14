@@ -1,7 +1,6 @@
 FROM pytorch/pytorch:2.10.0-cuda13.0-cudnn9-runtime
 
 WORKDIR /workspaces
-# COPY src .
 
 RUN apt update
 RUN apt install -y  \    
@@ -14,12 +13,11 @@ RUN apt install -y  \
 RUN python3 -m venv venv 
 
 
-RUN venv/bin/pip install ultralytics opencv-python scikit-learn tqdm fastapi streamlit
+RUN venv/bin/pip install ultralytics opencv-python scikit-learn tqdm fastapi python-multipart uvicorn gradio ffmpeg
 RUN echo "source /workspaces/venv/bin/activate" >> ~/.bashrc
 
 RUN rm -rf /var/lib/apt/lists/*
 
+WORKDIR /workspaces/shredml/src
 
 CMD ["sleep", "infinity"]
-
-

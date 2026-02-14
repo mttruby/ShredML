@@ -7,22 +7,22 @@ from ml.nodes.feature.feature_extractor import FeatureExtractor
 
 class LSTMClassifier(nn.Module):
 
-    def __init__(self, feature_extractor: FeatureExtractor, num_classes):
+    def __init__(self, num_classes, feature_extractor: FeatureExtractor = FeatureExtractor()):
         super().__init__()
 
         self.feature_extractor = feature_extractor
 
         self.lstm = nn.LSTM(
             input_size=feature_extractor.out_dim,
-            hidden_size=256,
-            batch_first=True
+            hidden_size=64,
+            batch_first=True,
         )
 
         self.classifier = nn.Sequential(
-            nn.Linear(128,64),
+            nn.Linear(64,32),
             nn.ReLU(),
-            nn.Dropout(0.3),
-            nn.Linear(64, num_classes)
+            nn.Dropout(0.5),
+            nn.Linear(32, num_classes)
         )
 
     def forward(self, x):

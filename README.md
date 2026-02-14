@@ -1,4 +1,5 @@
 # ShredML
+### Live demo available at [shredml.duckdns.org](shredml.duckdns.org)
 
 **Title:** ShredML \
 **Topic:** Skateboarding Trick Classification \
@@ -19,7 +20,7 @@ The easiest setup method would be to use the Dockerfile after cloning the repo:
 ```bash
 cd ShredML
 docker build -t [image name] .
-docker create --name [container name] [image name]
+docker create --gpus all --name [container name] [image name]
 docker start [contaier name]
 ```
 
@@ -29,10 +30,8 @@ The project makes use of the following python packages:
 - ultralytics
 - scikit-learn
 - tqdm
-
-Planned for deployment:
 - fastapi
-- streamlit
+- gradio
 ---
 
 ## Data
@@ -95,10 +94,10 @@ class LSTMClassifier(nn.Module):
         )
 
         self.classifier = nn.Sequential(
-            nn.Linear(128,64),
+            nn.Linear(256,128),
             nn.ReLU(),
-            nn.Dropout(0.3),
-            nn.Linear(64, num_classes)
+            nn.Dropout(0.5),
+            nn.Linear(128, num_classes)
         )
 
     def forward(self, x):
@@ -121,7 +120,7 @@ class LSTMClassifier(nn.Module):
 ## Training
 
 - **Epochs:** 20  
-- **Batch size:** 8 
+- **Batch size:** 16 
 - **Learning rate**: 0.001
 - **Cross validation**: 5-fold; 80% train, 20%  test
 - **Loss function:** Cross-entropy 
@@ -132,21 +131,20 @@ class LSTMClassifier(nn.Module):
 
 ## Evaluation
 
-Terrible performance atm, didnt get to create some plots yet.
+
 
 ---
 
 ## Deployment
 
-Note: deployment isn't done yet, however, this is what I planned:
-**FastAPI** and **Streamlit**:  
+All components run on Docker.
+ 
+**FastAPI** and **Gradio**:  
 
-- **FastAPI endpoint:** Accepts a video upload and returns predicted trick class.  
-- **Visualization:** Optionally returns bounding box tracking video to illustrate the detected skateboard motion.  
-- **Frontend:** Streamlit web interface
+- **FastAPI:** Accepts a video upload at POST /inference. Returns a Job ID. The result can then be polled with GET /inference/{id} and returns predicted trick class as well as bounding boxes for the Skateboard.  
+- **Frontend:** A Gradio web interface allowing for uploading own Videos or choosing from the SkateboardML-Dataset.
 
 ---
-NOTE: Didnt finish creating the API yet due to Bugs in predict.py
 
 ## Possible Use Cases
 - Automated trick recognition for **S.K.A.T.E.** games (but there is arguably no real demand for it)

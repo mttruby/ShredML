@@ -209,3 +209,5 @@ __marimo__/
 *.jpg
 *.json
 *.pt
+*.mov
+*.MOV
