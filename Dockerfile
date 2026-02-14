@@ -25,10 +25,10 @@ RUN mkdir shredml
 WORKDIR shredml
 
 COPY src/ src/
-COPY data/ src/data/ 
+COPY data/ data/
 
 RUN mkdir ../outputs
 
 WORKDIR src
 
-CMD ["sleep", "infinity"]
+CMD ["bash", "start.sh"]
