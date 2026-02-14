@@ -9,12 +9,13 @@ RUN apt install -y  \
     libxcb1         \
     libgl1          \
     libglib2.0-0    \
-    python3.12-venv
+    python3.12-venv \
+    ffmpeg
 
 RUN python3 -m venv venv 
 
 
-RUN venv/bin/pip install ultralytics opencv-python scikit-learn tqdm fastapi python-multipart uvicorn gradio ffmpeg
+RUN venv/bin/pip install ultralytics opencv-python scikit-learn tqdm fastapi python-multipart uvicorn gradio
 RUN echo "source /workspaces/venv/bin/activate" >> ~/.bashrc
 
 RUN rm -rf /var/lib/apt/lists/*
@@ -23,10 +24,10 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN mkdir shredml
 WORKDIR shredml
 
-COPY src src
-COPY data data
+COPY src/ src/
+COPY data/ src/data/ 
 
-RUN mkdir outputs
+RUN mkdir ../outputs
 
 WORKDIR src
 
