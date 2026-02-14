@@ -110,8 +110,8 @@ class LSTMClassifier(nn.Module):
         return self.classifier(last)
 ```
 
-- **Feature extractor:** ResNet18 pretrained on ImageNet  
-- **Sequence model:** LSTM with 128 hidden units  
+- **Feature extractor:** ResNet18 pretrained on ImageNet, output dimensions: 512
+- **Sequence model:** LSTM
 - **Classifier:** Two linear layers with ReLU and dropout inbetween 
 - **References:** [ResNet paper](https://arxiv.org/abs/1512.03385)  
 
@@ -131,18 +131,47 @@ class LSTMClassifier(nn.Module):
 
 ## Evaluation
 
+## Model Configurations
+
+The following table summarizes the different LSTM classifier hyperparameters used for comparison.
+Number of classes N = 2.
+
+| Model | LSTM Hidden Size | Linear Layer Dims | Dropout |
+|------|------------------|--------------------------|---------|
+| Small | 128 | 128 -> 64 -> 32 -> N | 0.5 |
+| Medium | 256 | 256 -> 128 -> N | 0.5 |
+| Large | 384 | 384 -> 192 -> N | 0.5 |
+| Largest | 512 | 512 -> 256 -> N | 0.5 |
+
+
+![Small Model](media/fg_128.png)
+*Figure 1: Small Model*
+
+![Medium Model](media/fg_256.png)
+*Figure 2: Medium Model*
+
+![Large Model](media/fg_384.png)
+*Figure 3: Large Model*
+
+![Largest Model](media/fg_512.png)
+*Figure 4: Largest Model*
 
 
 ---
 
 ## Deployment
 
-All components run on Docker.
+All components run on Docker. A live demo is availavle at https://dshredml.duckdns.org.
+
  
 **FastAPI** and **Gradio**:  
 
 - **FastAPI:** Accepts a video upload at POST /inference. Returns a Job ID. The result can then be polled with GET /inference/{id} and returns predicted trick class as well as bounding boxes for the Skateboard.  
-- **Frontend:** A Gradio web interface allowing for uploading own Videos or choosing from the SkateboardML-Dataset.
+- **Frontend:** A Gradio web interface allowing for uploading own Videos or choosing from the SkateboardML-Dataset. It visualizes the bounding boxes from YOLO, it's confidence as well as the predicted class probabilities.
+
+![webapp](media/webapp.png)
+*Figure 5: UI*
+
 
 ---
 
