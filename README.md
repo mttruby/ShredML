@@ -138,7 +138,7 @@ Number of classes N = 2.
 
 | Model | LSTM Hidden Size | Linear Layer Dims | Dropout |
 |------|------------------|--------------------------|---------|
-| Small | 128 | 128 -> 64 -> 32 -> N | 0.5 |
+| Small | 128 | 128 -> 64 -> N | 0.5 |
 | Medium | 256 | 256 -> 128 -> N | 0.5 |
 | Large | 384 | 384 -> 192 -> N | 0.5 |
 | Largest | 512 | 512 -> 256 -> N | 0.5 |
