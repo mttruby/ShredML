@@ -1,4 +1,5 @@
 # ShredML
+### Live demo available at [shredml.duckdns.org](https://shredml.duckdns.org)
 
 **Title:** ShredML \
 **Topic:** Skateboarding Trick Classification \
@@ -19,7 +20,7 @@ The easiest setup method would be to use the Dockerfile after cloning the repo:
 ```bash
 cd ShredML
 docker build -t [image name] .
-docker create --name [container name] [image name]
+docker create --gpus all --name [container name] [image name]
 docker start [contaier name]
 ```
 
@@ -29,10 +30,8 @@ The project makes use of the following python packages:
 - ultralytics
 - scikit-learn
 - tqdm
-
-Planned for deployment:
 - fastapi
-- streamlit
+- gradio
 ---
 
 ## Data
@@ -95,10 +94,10 @@ class LSTMClassifier(nn.Module):
         )
 
         self.classifier = nn.Sequential(
-            nn.Linear(128,64),
+            nn.Linear(256,128),
             nn.ReLU(),
-            nn.Dropout(0.3),
-            nn.Linear(64, num_classes)
+            nn.Dropout(0.5),
+            nn.Linear(128, num_classes)
         )
 
     def forward(self, x):
@@ -111,8 +110,8 @@ class LSTMClassifier(nn.Module):
         return self.classifier(last)
 ```
 
-- **Feature extractor:** ResNet18 pretrained on ImageNet  
-- **Sequence model:** LSTM with 128 hidden units  
+- **Feature extractor:** ResNet18 pretrained on ImageNet, output dimensions: 512
+- **Sequence model:** LSTM
 - **Classifier:** Two linear layers with ReLU and dropout inbetween 
 - **References:** [ResNet paper](https://arxiv.org/abs/1512.03385)  
 
@@ -121,7 +120,7 @@ class LSTMClassifier(nn.Module):
 ## Training
 
 - **Epochs:** 20  
-- **Batch size:** 8 
+- **Batch size:** 16 
 - **Learning rate**: 0.001
 - **Cross validation**: 5-fold; 80% train, 20%  test
 - **Loss function:** Cross-entropy 
@@ -132,21 +131,49 @@ class LSTMClassifier(nn.Module):
 
 ## Evaluation
 
-Terrible performance atm, didnt get to create some plots yet.
+## Model Configurations
+
+The following table summarizes the different LSTM classifier hyperparameters used for comparison.
+Number of classes N = 2.
+
+| Model | LSTM Hidden Size | Linear Layer Dims | Dropout |
+|------|------------------|--------------------------|---------|
+| Small | 128 | 128 -> 64 -> 32 -> N | 0.5 |
+| Medium | 256 | 256 -> 128 -> N | 0.5 |
+| Large | 384 | 384 -> 192 -> N | 0.5 |
+| Largest | 512 | 512 -> 256 -> N | 0.5 |
+
+
+![Small Model](media/fg_128.png)
+*Figure 1: Small Model*
+
+![Medium Model](media/fg_256.png)
+*Figure 2: Medium Model*
+
+![Large Model](media/fg_384.png)
+*Figure 3: Large Model*
+
+![Largest Model](media/fg_512.png)
+*Figure 4: Largest Model*
+
 
 ---
 
 ## Deployment
 
-Note: deployment isn't done yet, however, this is what I planned:
-**FastAPI** and **Streamlit**:  
+All components run on Docker. A live demo is availavle at https://dshredml.duckdns.org.
 
-- **FastAPI endpoint:** Accepts a video upload and returns predicted trick class.  
-- **Visualization:** Optionally returns bounding box tracking video to illustrate the detected skateboard motion.  
-- **Frontend:** Streamlit web interface
+ 
+**FastAPI** and **Gradio**:  
+
+- **FastAPI:** Accepts a video upload at POST /inference. Returns a Job ID. The result can then be polled with GET /inference/{id} and returns predicted trick class as well as bounding boxes for the Skateboard.  
+- **Frontend:** A Gradio web interface allowing for uploading own Videos or choosing from the SkateboardML-Dataset. It visualizes the bounding boxes from YOLO, it's confidence as well as the predicted class probabilities.
+
+![webapp](media/webapp.png)
+*Figure 5: UI*
+
 
 ---
-NOTE: Didnt finish creating the API yet due to Bugs in predict.py
 
 ## Possible Use Cases
 - Automated trick recognition for **S.K.A.T.E.** games (but there is arguably no real demand for it)
